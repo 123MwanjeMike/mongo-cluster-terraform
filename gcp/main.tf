@@ -10,11 +10,21 @@ resource "google_compute_network" "databases" {
   mtu                     = 8896
 }
 
-resource "google_compute_subnetwork" "mongod-db" {
+resource "google_compute_subnetwork" "mongod_db" {
   name          = "mongo-db"
   ip_cidr_range = "10.0.0.0/28"
   region        = "europe-north1"
   network       = google_compute_network.databases.self_link
+}
+
+resource "google_compute_firewall" "allow_ssh_http_https" {
+  name    = "allow-ssh-http-https"
+  network = google_compute_network.databases.self_link
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "443"]
+  }
+  source_ranges = ["0.0.0.0/0"]
 }
 
 module "ComputeDisk" {

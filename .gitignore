@@ -23,6 +23,7 @@ crash.log
 terraform.rc
 
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 
 # Ignore credentials files
 terraform.tfvars
