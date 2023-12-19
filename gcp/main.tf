@@ -4,7 +4,6 @@ provider "google" {
   credentials = file("../terraform-sa-key.json")
 }
 
-# Create a Google Cloud Platform network
 resource "google_compute_network" "databases" {
   name                    = "databases"
   auto_create_subnetworks = false
@@ -13,11 +12,10 @@ resource "google_compute_network" "databases" {
 
 resource "google_compute_subnetwork" "mongod-db" {
   name          = "mongo-db"
-  ip_cidr_range = "10.132.0.32/27"
+  ip_cidr_range = "10.0.0.0/28"
   region        = "europe-north1"
   network       = google_compute_network.databases.self_link
 }
-
 
 module "ComputeDisk" {
   source = "./modules/ComputeDisk"

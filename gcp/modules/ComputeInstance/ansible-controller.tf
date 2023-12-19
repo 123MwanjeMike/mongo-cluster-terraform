@@ -22,7 +22,7 @@ resource "google_compute_instance" "ansible_controller" {
 
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.132.0.44"
+    network_ip = "10.0.0.2"
   }
 
   project = var.project_id

@@ -21,7 +21,7 @@ resource "google_compute_instance" "mongod_shard_0_1" {
     
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.132.0.49"
+    network_ip = "10.0.0.7"
   }
 
   project = var.project_id

@@ -21,7 +21,7 @@ resource "google_compute_instance" "mongod_cfgsvr_0" {
     
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.132.0.45"
+    network_ip = "10.0.0.3"
   }
 
   project = var.project_id

@@ -25,7 +25,7 @@ resource "google_compute_instance" "mongos_router_0" {
     
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.132.0.54"
+    network_ip = "10.0.0.9"
   }
 
   project = var.project_id
