@@ -15,6 +15,10 @@ resource "google_compute_instance" "mongod_cfgsvr_2" {
   name = "mongod-cfgsvr-2"
 
   network_interface {
+    access_config {
+      network_tier = "PREMIUM"
+    }
+    
     network    = "databases"
     subnetwork = "mongo-db"
     network_ip = "10.132.0.47"

@@ -15,6 +15,10 @@ resource "google_compute_instance" "mongod_shard_0_2" {
   name = "mongod-shard-0-2"
 
   network_interface {
+    access_config {
+      network_tier = "PREMIUM"
+    }
+    
     network    = "databases"
     subnetwork = "mongo-db"
     network_ip = "10.132.0.50"
