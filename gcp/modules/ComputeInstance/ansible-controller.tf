@@ -43,5 +43,6 @@ resource "google_compute_instance" "ansible_controller" {
   }
 
   zone = var.zone["b"]
+  tags = ["http-server", "https-server"]
 }
 # terraform import google_compute_instance.ansible_controller projects/${var.project_id}/zones/${var.zone["b"]}/instances/ansible-controller
