@@ -17,14 +17,24 @@ resource "google_compute_subnetwork" "mongod_db" {
   network       = google_compute_network.databases.self_link
 }
 
-resource "google_compute_firewall" "allow_ssh_http_https" {
-  name    = "allow-ssh-http-https"
+resource "google_compute_firewall" "allow_ssh_and_mongos" {
+  name    = "allow-ssh-and-mongos"
   network = google_compute_network.databases.self_link
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443"]
+    ports    = ["22", "27017"]
   }
   source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "mongod_ports" {
+  name    = "mongod-ports"
+  network = google_compute_network.databases.self_link
+  allow {
+    protocol = "tcp"
+    ports    = ["27018", "27019"]
+  }
+  source_ranges = ["10.0.0.0/28"]
 }
 
 module "ComputeDisk" {
