@@ -1,7 +1,20 @@
-resource "google_compute_instance" "mongod_shard_0_1" {
+resource "google_compute_disk" "mongod_shard_0_0" {
+  image                     = var.os["ubuntu-focal"]
+  name                      = "mongod-shard-0-0"
+  physical_block_size_bytes = 4096
+  project                   = var.project_id
+  size                      = var.disk_size["medium"]
+  type                      = "pd-standard"
+  zone                      = var.zone["b"]
+  description               = "Disk for a mongodb sharded cluster shard instance"
+}
+# terraform import google_compute_disk.mongod_shard_0_0 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-shard-0-0
+
+
+resource "google_compute_instance" "mongod_shard_0_0" {
   boot_disk {
     auto_delete = false
-    source      = "mongod-shard-0-1"
+    source      = google_compute_disk.mongod_shard_0_0.self_link
   }
 
   machine_type = "e2-highmem-2"
@@ -12,7 +25,7 @@ resource "google_compute_instance" "mongod_shard_0_1" {
     startup-script = "sudo ufw allow ssh"
   }
 
-  name = "mongod-shard-0-1"
+  name = "mongod-shard-0-0"
 
   network_interface {
     access_config {
@@ -21,7 +34,7 @@ resource "google_compute_instance" "mongod_shard_0_1" {
     
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.0.0.7"
+    network_ip = "10.0.0.6"
   }
 
   project = var.project_id
@@ -41,6 +54,6 @@ resource "google_compute_instance" "mongod_shard_0_1" {
     scopes = ["https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/trace.append"]
   }
 
-  zone = var.zone["c"]
+  zone = var.zone["b"]
 }
-# terraform import google_compute_instance.mongod_shard_0_1 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-shard-0-1
+# terraform import google_compute_instance.mongod_shard_0_0 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-shard-0-0

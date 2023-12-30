@@ -1,18 +1,31 @@
-resource "google_compute_instance" "mongod_shard_0_2" {
+resource "google_compute_disk" "mongod_cfgsvr_2" {
+  image                     = var.os["ubuntu-focal"]
+  name                      = "mongod-cfgsvr-2"
+  physical_block_size_bytes = 4096
+  project                   = var.project_id
+  size                      = var.disk_size["small"]
+  type                      = "pd-standard"
+  zone                      = var.zone["a"]
+  description               = "Disk for a mongodb sharded cluster config server"
+}
+# terraform import google_compute_disk.mongod_cfgsvr_2 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-cfgsvr-2
+
+
+resource "google_compute_instance" "mongod_cfgsvr_2" {
   boot_disk {
     auto_delete = false
-    source      = "mongod-shard-0-2"
+    source      = google_compute_disk.mongod_cfgsvr_2.self_link
   }
-
-  machine_type = "e2-highmem-2"
   
   allow_stopping_for_update = true
+
+  machine_type = "e2-standard-2"
 
   metadata = {
     startup-script = "sudo ufw allow ssh"
   }
 
-  name = "mongod-shard-0-2"
+  name = "mongod-cfgsvr-2"
 
   network_interface {
     access_config {
@@ -21,7 +34,7 @@ resource "google_compute_instance" "mongod_shard_0_2" {
     
     network    = "databases"
     subnetwork = "mongo-db"
-    network_ip = "10.0.0.8"
+    network_ip = "10.0.0.5"
   }
 
   project = var.project_id
@@ -43,4 +56,4 @@ resource "google_compute_instance" "mongod_shard_0_2" {
 
   zone = var.zone["a"]
 }
-# terraform import google_compute_instance.mongod_shard_0_2 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-shard-0-2
+# terraform import google_compute_instance.mongod_cfgsvr_2 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-cfgsvr-2
