@@ -1,40 +1,39 @@
-resource "google_compute_disk" "mongod_cfgsvr_0" {
+resource "google_compute_disk" "mongod_shard_0_0" {
   image                     = var.os["ubuntu-focal"]
-  name                      = "mongod-cfgsvr-0"
+  name                      = "mongod-shard-0-0"
   physical_block_size_bytes = 4096
   project                   = var.project_id
-  size                      = var.disk_size["small"]
+  size                      = var.disk_size["medium"]
   type                      = "pd-standard"
   zone                      = var.zone["b"]
-  description               = "Disk for a mongodb sharded cluster config server"
+  description               = "Disk for a mongodb sharded cluster shard instance"
 }
-# terraform import google_compute_disk.mongod_cfgsvr_0 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-cfgsvr-0
+# terraform import google_compute_disk.mongod_shard_0_0 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-shard-0-0
 
 
-resource "google_compute_instance" "mongod_cfgsvr_0" {
+resource "google_compute_instance" "mongod_shard_0_0" {
   boot_disk {
     auto_delete = false
-    source      = google_compute_disk.mongod_cfgsvr_0.self_link
+    source      = google_compute_disk.mongod_shard_0_0.self_link
   }
+
+  machine_type = "e2-highmem-2"
   
   allow_stopping_for_update = true
-
-  machine_type = "e2-standard-2"
 
   metadata = {
     startup-script = "sudo ufw allow ssh"
   }
 
-  name = "mongod-cfgsvr-0"
+  name = "mongod-shard-0-0"
 
   network_interface {
     access_config {
       network_tier = "PREMIUM"
     }
     
-    network    = "databases"
-    subnetwork = "mongo-db"
-    network_ip = "10.0.0.3"
+    subnetwork = var.mongo_db_subnet
+    network_ip = "10.0.0.6"
   }
 
   project = var.project_id
@@ -56,4 +55,4 @@ resource "google_compute_instance" "mongod_cfgsvr_0" {
 
   zone = var.zone["b"]
 }
-# terraform import google_compute_instance.mongod_cfgsvr_0 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-cfgsvr-0
+# terraform import google_compute_instance.mongod_shard_0_0 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-shard-0-0

@@ -32,8 +32,7 @@ resource "google_compute_instance" "mongod_shard_0_1" {
       network_tier = "PREMIUM"
     }
     
-    network    = "databases"
-    subnetwork = "mongo-db"
+    subnetwork = var.mongo_db_subnet
     network_ip = "10.0.0.7"
   }
 

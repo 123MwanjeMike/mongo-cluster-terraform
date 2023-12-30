@@ -36,8 +36,7 @@ resource "google_compute_instance" "mongos_router_0" {
       network_tier = "PREMIUM"
     }
     
-    network    = "databases"
-    subnetwork = "mongo-db"
+    subnetwork = var.mongo_db_subnet
     network_ip = "10.0.0.9"
   }
 

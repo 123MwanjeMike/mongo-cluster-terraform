@@ -1,20 +1,20 @@
-resource "google_compute_disk" "mongod_cfgsvr_2" {
+resource "google_compute_disk" "mongod_cfgsvr_0" {
   image                     = var.os["ubuntu-focal"]
-  name                      = "mongod-cfgsvr-2"
+  name                      = "mongod-cfgsvr-0"
   physical_block_size_bytes = 4096
   project                   = var.project_id
   size                      = var.disk_size["small"]
   type                      = "pd-standard"
-  zone                      = var.zone["a"]
+  zone                      = var.zone["b"]
   description               = "Disk for a mongodb sharded cluster config server"
 }
-# terraform import google_compute_disk.mongod_cfgsvr_2 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-cfgsvr-2
+# terraform import google_compute_disk.mongod_cfgsvr_0 projects/${var.project_id}/zones/${var.zone["b"]}/disks/mongod-cfgsvr-0
 
 
-resource "google_compute_instance" "mongod_cfgsvr_2" {
+resource "google_compute_instance" "mongod_cfgsvr_0" {
   boot_disk {
     auto_delete = false
-    source      = google_compute_disk.mongod_cfgsvr_2.self_link
+    source      = google_compute_disk.mongod_cfgsvr_0.self_link
   }
   
   allow_stopping_for_update = true
@@ -25,16 +25,15 @@ resource "google_compute_instance" "mongod_cfgsvr_2" {
     startup-script = "sudo ufw allow ssh"
   }
 
-  name = "mongod-cfgsvr-2"
+  name = "mongod-cfgsvr-0"
 
   network_interface {
     access_config {
       network_tier = "PREMIUM"
     }
     
-    network    = "databases"
-    subnetwork = "mongo-db"
-    network_ip = "10.0.0.5"
+    subnetwork = var.mongo_db_subnet
+    network_ip = "10.0.0.3"
   }
 
   project = var.project_id
@@ -54,6 +53,6 @@ resource "google_compute_instance" "mongod_cfgsvr_2" {
     scopes = ["https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/trace.append"]
   }
 
-  zone = var.zone["a"]
+  zone = var.zone["b"]
 }
-# terraform import google_compute_instance.mongod_cfgsvr_2 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-cfgsvr-2
+# terraform import google_compute_instance.mongod_cfgsvr_0 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongod-cfgsvr-0
