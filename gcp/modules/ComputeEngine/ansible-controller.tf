@@ -1,20 +1,20 @@
-# resource "google_compute_disk" "ansible_controller" {
-#   image                     = var.os["ubuntu-focal"]
-#   name                      = "ansible-controller"
-#   physical_block_size_bytes = 4096
-#   project                   = var.project_id
-#   size                      = var.disk_size["small"]
-#   type                      = "pd-standard"
-#   zone                      = var.zone["b"]
-#   description               = "Disk for the ansible-controller instance"
-# }
-# # terraform import google_compute_disk.ansible_controller projects/${var.project_id}/zones/${var.zone["b"]}/disks/ansible-controller
+resource "google_compute_disk" "ansible_controller" {
+  image                     = var.os["ubuntu-focal"]
+  name                      = "ansible-controller"
+  physical_block_size_bytes = 4096
+  project                   = var.project_id
+  size                      = var.disk_size["small"]
+  type                      = "pd-standard"
+  zone                      = var.zone["b"]
+  description               = "Disk for the ansible-controller instance"
+}
+# terraform import google_compute_disk.ansible_controller projects/${var.project_id}/zones/${var.zone["b"]}/disks/ansible-controller
 
 
 resource "google_compute_instance" "ansible_controller" {
   boot_disk {
     auto_delete = false
-    source      = "ansible-controller"
+    source      = google_compute_disk.ansible_controller.self_link
   }
   
   machine_type = "e2-small"
