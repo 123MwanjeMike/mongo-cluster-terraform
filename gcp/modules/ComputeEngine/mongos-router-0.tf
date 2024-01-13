@@ -16,10 +16,6 @@ resource "google_compute_instance" "mongos_router_0" {
     auto_delete = false
     source      = google_compute_disk.mongos_router_0.self_link
   }
-
-  labels = {
-    "env"  = "prod"
-  }
   
   allow_stopping_for_update = true
 

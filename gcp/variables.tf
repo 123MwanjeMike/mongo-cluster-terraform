@@ -1,10 +1,10 @@
 variable "project_id" {
-  default     = "oceanic-muse-408212"
+  default     = "<PROJECT_NAME>"
   description = "GCP project ID"
 }
 
 variable "project_number" {
-  default     = "903857880702"
+  default     = "<PROJECT_ID>"
   description = "GCP project number"
 }
 
@@ -24,19 +24,16 @@ variable "zone" {
 
 variable "os" {
   default = {
-    "ubuntu-focal" = "ubuntu-2004-focal-v20220712"
     "ubuntu-jammy" = "ubuntu-2204-jammy-v20230425"
+    "ubuntu-focal" = "ubuntu-2004-focal-v20220712"
   }
   description = "Operating systems to use"
 }
 
 variable "disk_size" {
   default = {
-    "tiny"   = "10"
     "small"  = "20"
     "medium" = "50"
-    "large"  = "100"
-    "huge"   = "200"
   }
   description = "Disk sizes to use"
 }
