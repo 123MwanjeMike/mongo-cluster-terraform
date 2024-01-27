@@ -1,10 +1,8 @@
 variable "project_id" {
-  default     = "<PROJECT_NAME>"
   description = "GCP project ID"
 }
 
 variable "project_number" {
-  default     = "<PROJECT_ID>"
   description = "GCP project number"
 }
 
@@ -36,4 +34,9 @@ variable "disk_size" {
     "medium" = "50"
   }
   description = "Disk sizes to use"
+}
+
+variable "replica_size" {
+  default     = 3
+  description = "Number of instances in a replica set"
 }
