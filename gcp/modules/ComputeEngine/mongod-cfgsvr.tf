@@ -3,7 +3,7 @@ resource "google_compute_instance" "mongod_cfgsvr" {
 
   boot_disk {
     initialize_params {
-        image = var.os["ubuntu-focal"]
+        image = var.os
         size  = var.disk_size["small"]
         type  = "pd-standard"
     }
