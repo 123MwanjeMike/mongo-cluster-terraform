@@ -21,11 +21,8 @@ variable "zone" {
 }
 
 variable "os" {
-  default = {
-    "ubuntu-jammy" = "ubuntu-2204-jammy-v20230425"
-    "ubuntu-focal" = "ubuntu-2004-focal-v20220712"
-  }
-  description = "Operating systems to use"
+  default = "ubuntu-2204-jammy-v20230425"
+  description = "Operating system to use"
 }
 
 variable "disk_size" {

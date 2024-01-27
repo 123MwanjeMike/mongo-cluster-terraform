@@ -16,7 +16,7 @@
     ```
 4. Create a JSON key for the service account
     ```bash
-    gcloud iam service-accounts keys create ./terraform-sa-key.json \
+    gcloud iam service-accounts keys create gcp/terraform-sa-key.json \
     --iam-account=terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com
     ```
 5. Give the service account "Editor permissions"

@@ -1,7 +1,7 @@
 resource "google_compute_instance" "mongos_router_0" {
   boot_disk {
     initialize_params {
-        image = var.os["ubuntu-focal"]
+        image = var.os
         size  = var.disk_size["small"]
         type  = "pd-standard"
     }    
