@@ -1,21 +1,23 @@
-resource "google_compute_instance" "mongos_router_0" {
+resource "google_compute_instance" "mongod_shard_0" {
+  count = var.replica_size
+
   boot_disk {
     initialize_params {
         image = var.os["ubuntu-focal"]
-        size  = var.disk_size["small"]
+        size  = var.disk_size["medium"]
         type  = "pd-standard"
-    }    
+    }
   }
+
+  machine_type = "e2-highmem-2"
   
   allow_stopping_for_update = true
-
-  machine_type = "e2-small"
 
   metadata = {
     startup-script = "sudo ufw allow ssh"
   }
 
-  name = "mongos-router-0"
+  name = "mongod-shard-0-${count.index}"
 
   network_interface {
     access_config {
@@ -39,10 +41,10 @@ resource "google_compute_instance" "mongos_router_0" {
 
   service_account {
     email  = "${var.project_number}-compute@developer.gserviceaccount.com"
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    scopes = ["https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/trace.append"]
   }
 
-  tags = ["http-server", "https-server", "mongos-router", "mongodb-cluster"]
-  zone = var.zone["b"]
+  tags = ["mongod-shard", "mongodb-cluster"]
+
+  zone = var.zone[sort(keys(var.zone))[count.index]]
 }
-# terraform import google_compute_instance.mongos_router_0 projects/${var.project_id}/zones/${var.zone["b"]}/instances/mongos-router-0

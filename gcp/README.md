@@ -20,4 +20,8 @@
     --iam-account=terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com
     ```
 5. Give the service account "Editor permissions"
-6. Substitute `<PROJECT_ID>` and `<PROJECT_NAME>` in the [variables](./variables.tf) file with values obtained from step 1.
+6. Create and populate a `terraform.tfvars` file with the commands below:
+    ```bash
+    echo 'project_id = "<PROJECT_ID>"' > terraform.tfvars
+    echo 'project_number = "<PROJECT_NAME>"' >> terraform.tfvars
+    ```

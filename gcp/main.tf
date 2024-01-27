@@ -13,6 +13,7 @@ module "ComputeEngine" {
   zone            = var.zone
   os              = var.os
   disk_size       = var.disk_size
+  replica_size    = var.replica_size
   mongo_db_subnet = module.VPC.mongo_db_subnet
 }
 
