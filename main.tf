@@ -3,4 +3,7 @@ module "resources" {
   #   source = "./aws"
   #   source = "./azure"
   source = "./gcp"
+
+  project_id = var.gcp_project_id
+  project_number = var.gcp_project_number
 }
